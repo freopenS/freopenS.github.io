@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>单片机学习日志-1 点亮LED</title>
+      <link href="/2022/09/22/dan-pian-ji-xue-xi-ri-zhi-1-dian-liang-led/"/>
+      <url>/2022/09/22/dan-pian-ji-xue-xi-ri-zhi-1-dian-liang-led/</url>
+      
+        <content type="html"><![CDATA[<blockquote><p>单片机平台是STC89C52RC</p></blockquote><p>众所周知，玩硬件的helloworld是点亮板子上的LED灯珠。</p><p>首先看看电路板的原理图。<br><img src="https://img.chkaja.com/ef64ce8d56777e4e.png," alt="开发板LED模块原理图" title="LED模块原理图"></p><p>可以看出来这个led模块的灯珠与P2管脚连接，<strong>D8-D1</strong>分别与寄存器的[7:0]位一一对应**(D1与P2寄存器的0号位连接）**。继续分析电路，可以看出与P2管脚连接的LED管脚是负极，所以要点亮led灯就需要在对应寄存器上加低电平。</p><p>有了上面的分析思路，不难写出以下代码来点亮第一个灯D1.</p><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span><span class="token string">&lt;REGX52.H&gt;</span></span><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>    P2<span class="token operator">=</span><span class="token number">0xfe</span><span class="token punctuation">;</span> <span class="token comment">//(1111 1110)b</span>    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 单片机, c语言 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>主题配置</title>
       <link href="/2022/09/22/zhu-ti-pei-zhi/"/>
       <url>/2022/09/22/zhu-ti-pei-zhi/</url>
