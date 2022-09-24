@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="单片机学习日志 2 流水灯, Hexo">
+    <meta name="keywords" content="单片机学习日志-3 独立按键, Hexo">
     <meta name="description" content="">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>单片机学习日志 2 流水灯 | Hexo</title>
+    <title>单片机学习日志-3 独立按键 | Hexo</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -312,12 +312,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/22.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">单片机学习日志 2 流水灯</h1>
+                    <h1 class="description center-align post-title">单片机学习日志-3 独立按键</h1>
                 </div>
             </div>
         </div>
@@ -462,7 +462,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2022-09-23
+                    2022-09-24
                 </div>
                 
 
@@ -486,74 +486,32 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="02-流水灯"><a href="#02-流水灯" class="headerlink" title="02 流水灯"></a>02 流水灯</h1><p>点亮led之后，我们就可以着手控制灯的闪烁了。当然，我们一开始实现的是一个简单的、不需要外部按键的电路。</p>
-<h2 id="闪烁电路尝试"><a href="#闪烁电路尝试" class="headerlink" title="闪烁电路尝试"></a>闪烁电路尝试</h2><p>我们很自然的可以想到循环控制LED负极的电平高低来实现对LED灯亮灭的控制。</p>
-<h3 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        P2<span class="token operator">=</span><span class="token number">0xff</span><span class="token punctuation">;</span>        <span class="token comment">//关闭所有</span>
-        P2<span class="token operator">=</span><span class="token number">0xfe</span><span class="token punctuation">;</span>        <span class="token comment">//点亮D1</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>可以看到电路并没有实现我们预期中的效果，仅仅是灯的亮度变暗了。实际上，灯的高速闪烁让我们观察不到灯灭。因此，我们可以引入<strong>延迟</strong>函数来控制这个过程。</p>
-<blockquote>
-<p>延时函数是单片机开发中是必不可少的功能函数，在每个工程里都能找到它的踪影。虽然看起来不起眼，但在有些时序控制的场合，使用了一点点延时，往往能解决大问题。特别对于某些模块，往往需要微秒级的延时，例如超声波模块与红外接收器等。</p>
-</blockquote>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">Delay5us</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span>
-<span class="token punctuation">{</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">pragma</span> <span class="token expression">ASM</span></span>
-	NOP         <span class="token comment">//这三行等价于_nop()_;</span>
-<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">pragma</span> <span class="token expression">ENDASM</span></span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+                <h1 id="03-独立按键"><a href="#03-独立按键" class="headerlink" title="03 独立按键"></a>03 独立按键</h1><h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="开发板原理图"><a href="#开发板原理图" class="headerlink" title="开发板原理图"></a>开发板原理图</h3><p>在使用代码控制独立按键之前，我们需要先认识这个电子器件。<br><img src="https://img.chkaja.com/cd4bebf5bbe5309b.png," alt="按键模块原理图" title="按键模块原理图"></p>
+<p>可以看到，当按键未接通时，P3端均为高电位；当导通之后，P3变为低电位。我们很容易想到，只需要检测P3寄存器对应管脚的电位水平，就可以实现独立按键对开发板的控制。</p>
+<br>
 
-<p>这就是一个延时5us的函数，只需要在需要延时5us时调用此函数即可。引用<code>_nop_()</code>函数的时候需要引用头文件<code>&lt;INTRINS.H&gt;</code>。<code>_nop_</code>函数的执行需要消耗一个机器周期，对于12MHz晶振，就是1us，<code>_nop_</code>函数与<code>NOP</code>指令是一样的。那为啥函数<code>delay_5us()</code>只有一条<code>NOP</code>指令就需要5us？</p>
-<p>答案是：在调用此函数时，需要一个调用指令，此指令消耗2个周期（即2us）；函数执行完毕时要返回主调函数，需要一个返回指令，此指令消耗2个周期（2us）。调用和返回消耗了2us+2us=4us。然后再加上一个<code>NOP</code>指令消耗1us，就是5us了，所以说函数的调用本身也有一定的技术细节的。</p>
-<h3 id="使用工具生成延迟函数"><a href="#使用工具生成延迟函数" class="headerlink" title="使用工具生成延迟函数"></a>使用工具生成延迟函数</h3><p>当然，了解延迟函数之后，我们可以使用一些工具来生成我们所需要的延迟函数。<br>比如，在89c52平台上我们可以使用STC-ISP程序下载软件里面附带的延迟工具。<br><img src="https://img.chkaja.com/30bc89bd9006062e.png,%22%E7%94%9F%E6%88%90%E7%95%8C%E9%9D%A2%22" alt="STC-ISP"></p>
-<p>在生成的时候务必<strong>选对自己的系统频率和指令集！！</strong></p>
-<h2 id="带上延迟控制LED灯亮灭"><a href="#带上延迟控制LED灯亮灭" class="headerlink" title="带上延迟控制LED灯亮灭"></a>带上延迟控制LED灯亮灭</h2><p>我们生成一个500ms的延迟函数<code>Delay500ms()</code>，则工程代码就变成了</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+<h3 id="认识独立开关"><a href="#认识独立开关" class="headerlink" title="认识独立开关"></a>认识独立开关</h3><p>在理想开关中，当开关闭合，开关两端电平瞬间变化。但是，在实际操作下，在闭合/打开开关时存在电平的<strong>抖动</strong>，会影响到程序的逻辑判断。<br><img src="https://img.chkaja.com/347eb1f3065dc0a0.png," alt="电位图" title="电位抖动"><br>上图展示了独立开关在一个短按周期中的电位变化过程。</p>
+<ul>
+<li>在没有按键时，管脚侧处于高电平</li>
+<li>按下按键的5-10ms内，管脚侧抖动</li>
+<li>之后管脚侧处于低电平状态</li>
+<li>直到松手时，重复抖动过程使管脚侧电位回到高电平。</li>
+</ul>
+<p>为了过滤掉电平抖动，除了在硬件上使用滤波电路之外，还可以在软件上加入延迟，忽略掉电位变化这一段时间。</p>
+<p>同时，我们还注意到，在2段式开关（按下—回弹）的过程中，操作往往是在我们松手的时候才开始的（比如windows窗口上的关闭、最大最小化等按钮）。所以，在编写代码的时候，我们还要注意这一方面的处理。</p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><h3 id="使用一个开关控制一个灯"><a href="#使用一个开关控制一个灯" class="headerlink" title="使用一个开关控制一个灯"></a>使用一个开关控制一个灯</h3><pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        P2<span class="token operator">=</span><span class="token number">0xff</span><span class="token punctuation">;</span>
-        <span class="token function">Delay500ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        P2<span class="token operator">=</span><span class="token number">0xfe</span><span class="token punctuation">;</span>
-        <span class="token function">Delay500ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span>P3_1<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment">//消除按下抖动</span>
+            <span class="token keyword">while</span><span class="token punctuation">(</span>P3_1<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">//检测松手，不松手不往下走</span>
+            <span class="token function">Delay</span><span class="token punctuation">(</span><span class="token number">12</span><span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment">//消除松手抖动</span>
+            P2_0<span class="token operator">=</span><span class="token operator">~</span>P2_0<span class="token punctuation">;</span>         <span class="token comment">//开或关D1</span>
+        <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
     <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>这样，灯D1就能够以1s为周期闪烁了。</p>
-<h2 id="简单跑马灯"><a href="#简单跑马灯" class="headerlink" title="简单跑马灯"></a>简单跑马灯</h2><p>直接上主函数代码，对应的延迟函数请自行生成。</p>
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//一灯跑马</span>
-<span class="token keyword">int</span> <span class="token function">rollingLEDS_01</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-    <span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">8</span><span class="token punctuation">;</span>
-    P2<span class="token operator">=</span><span class="token number">0xfe</span><span class="token punctuation">;</span>
-	<span class="token function">Delay100ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token keyword">while</span><span class="token punctuation">(</span>i<span class="token operator">--</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-        P2<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">;</span>             <span class="token comment">//移位运算 不会可以百度</span>
-        P2<span class="token operator">+=</span><span class="token number">1</span><span class="token punctuation">;</span>
-        <span class="token function">Delay100ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
-<pre class="line-numbers language-c" data-language="c"><code class="language-c"><span class="token comment">//三灯跑马</span>
-<span class="token keyword">int</span> <span class="token function">rollingLEDS_02</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-	<span class="token keyword">int</span> i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-	P2<span class="token operator">=</span><span class="token number">0xff</span><span class="token punctuation">;</span>
-	<span class="token function">Delay100ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token keyword">while</span><span class="token punctuation">(</span>i<span class="token operator">&lt;</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
-		P2<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">;</span>
-		<span class="token function">Delay100ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		i<span class="token operator">++</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-	<span class="token keyword">while</span> <span class="token punctuation">(</span>i<span class="token operator">&lt;</span><span class="token number">10</span><span class="token punctuation">)</span>
-	<span class="token punctuation">{</span>
-		P2<span class="token operator">&lt;&lt;=</span><span class="token number">1</span><span class="token punctuation">;</span>
-		P2<span class="token operator">+=</span><span class="token number">1</span><span class="token punctuation">;</span>
-		<span class="token function">Delay100ms</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-		i<span class="token operator">++</span><span class="token punctuation">;</span>
-	<span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里使用的<code>Delay(n)</code>函数是对<code>Delay1ms()</code>的简单封装，在对时间精度不敏感的情况下可以这样使用。</p>
 
                 
             </div>
@@ -580,7 +538,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://freopens.github.io/2022/09/23/dan-pian-ji-xue-xi-ri-zhi-2-liu-shui-deng/">https://freopens.github.io/2022/09/23/dan-pian-ji-xue-xi-ri-zhi-2-liu-shui-deng/</a>
+                    <a href="https://freopens.github.io/2022/09/24/dan-pian-ji-xue-xi-ri-zhi-3-shi-ti-an-jian/">https://freopens.github.io/2022/09/24/dan-pian-ji-xue-xi-ri-zhi-3-shi-ti-an-jian/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -793,9 +751,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2022/09/24/dan-pian-ji-xue-xi-ri-zhi-3-shi-ti-an-jian/">
                     <div class="card-image">
@@ -813,9 +772,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2022-09-24
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-24
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
@@ -828,6 +787,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -850,13 +810,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2022/09/22/dan-pian-ji-xue-xi-ri-zhi-1-dian-liang-led/">
+                <a href="/2022/09/23/dan-pian-ji-xue-xi-ri-zhi-2-liu-shui-deng/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="单片机学习日志-1 点亮LED">
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="单片机学习日志 2 流水灯">
                         
-                        <span class="card-title">单片机学习日志-1 点亮LED</span>
+                        <span class="card-title">单片机学习日志 2 流水灯</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -867,7 +827,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-22
+                                <i class="far fa-clock fa-fw icon-date"></i>2022-09-23
                             </span>
                         <span class="publish-author">
                             
